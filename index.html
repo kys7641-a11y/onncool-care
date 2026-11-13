@@ -398,7 +398,7 @@ footer{max-width:1080px;margin:0 auto;padding:0 clamp(10px,3vw,24px) 40px;color:
 
 <div class="toast" id="toast"></div>
 
-<script src="config.js"></script>
+<script>/* 설정 파일은 항상 최신본을 불러오도록 캐시 무효화 */document.write('<script src="config.js?t='+Date.now()+'"><\/script>');</script>
 <script>
 /* ===== 기준 데이터 (사업수행 안내문 기준) ===== */
 const INCOME = { // 가구원수: [소득기준, 직장, 지역, 혼합(null=해당없음)]
