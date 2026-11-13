@@ -9,7 +9,7 @@
  *       - 액세스 권한이 있는 사용자: 모든 사용자
  *  4) 나온 웹 앱 URL(…/exec)을 GitHub의 config.js → endpoint 에 붙여넣기
  *
- * 같은 '기관명 + 관리번호'로 다시 기록하면 새 줄을 만들지 않고 최신 판정으로 덮어씁니다.
+ * 같은 '기관명 + 대상자명'으로 다시 기록하면 새 줄을 만들지 않고 최신 판정으로 덮어씁니다.
  */
 
 const TOKEN = 'onc-a486d4ee6e7c';   // config.js의 token과 똑같아야 합니다. 비우면 검사 안 함
@@ -18,7 +18,7 @@ const SUMMARY_NAME = '집계';
 
 // 시트 열 순서 (A~V)
 const HEADERS = [
-  '최초기록일시', '최종수정일시', '기관명', '담당자', '관리번호', '세대주',
+  '최초기록일시', '최종수정일시', '기관명', '담당자', '대상자명', '세대주',
   '가구원수', '소득자격', '건보가입형태', '건보료평균(원)', '건보료기준(원)', '소득판정',
   '유형', '세대원요건', '하절기(원)', '동절기(원)', '연간합계(원)', '서류구비',
   '미구비서류', '판정의견', '메모', '기록키'
@@ -71,7 +71,7 @@ function doPost(e) {
     lock.waitLock(15000);
     const d = JSON.parse(e.postData.contents || '{}');
     if (TOKEN && d.token !== TOKEN) return out_({ ok: false, error: 'token' });
-    if (!d.org || !d.caseId) return out_({ ok: false, error: '기관명과 관리번호가 필요합니다.' });
+    if (!d.org || !d.caseId) return out_({ ok: false, error: '기관명과 대상자 이름이 필요합니다.' });
 
     const ss = SpreadsheetApp.getActiveSpreadsheet();
     let sh = ss.getSheetByName(SHEET_NAME);

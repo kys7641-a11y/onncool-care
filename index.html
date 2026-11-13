@@ -387,7 +387,7 @@ footer{max-width:1080px;margin:0 auto;padding:16px clamp(10px,3vw,24px) 40px;col
       <div class="grid g2">
         <div><label class="f" for="sOrg">기관명 <span class="hint">(한 번 입력하면 기억)</span></label><input type="text" id="sOrg" placeholder="예: OO종합사회복지관"></div>
         <div><label class="f" for="sStaff">담당자 <span class="hint">(한 번 입력하면 기억)</span></label><input type="text" id="sStaff" placeholder="예: 홍길동"></div>
-        <div><label class="f" for="sName">대상자 관리번호 <span class="hint">(실명·주민번호 입력 금지)</span></label><input type="text" id="sName" placeholder="예: A-001"></div>
+        <div><label class="f" for="sName">대상자 이름 <span class="hint">(주민번호 입력 금지)</span></label><input type="text" id="sName" placeholder="예: 홍길동 (동명이인은 홍길동-2)" autocomplete="off"></div>
         <div><label class="f" for="sHead">세대주 동일 여부</label><select id="sHead"><option value="">선택</option><option>대상자 = 세대주</option><option>세대주 상이 (성명·생년월일 시스템 입력 필요)</option></select></div>
         <div><label class="f" for="sOpinion">담당자 판정 의견</label><select id="sOpinion"><option value="">선택</option><option>적합(1차 선정 추천)</option><option>보류(서류 보완)</option><option>부적합</option></select></div>
         <div><label class="f" for="sMemo">메모 <span class="hint">(선택, 개인정보 제외)</span></label><input type="text" id="sMemo" placeholder="예: 바우처 소진 확인 예정"></div>
@@ -400,12 +400,16 @@ footer{max-width:1080px;margin:0 auto;padding:16px clamp(10px,3vw,24px) 40px;col
         <button class="btn ghost" id="resetBtn">↺ 새 대상자</button>
         <a class="btn ghost" href="http://onandcool.or.kr/auth/login.html" target="_blank" rel="noopener">📊 성과관리 시스템 ↗</a>
       </div>
+      <div class="row" style="margin-top:10px">
+        <a class="btn" style="background:var(--navy)" href="https://docs.google.com/spreadsheets/d/1DEtXmjp9TEp4HiNiG981Ii_A180jkJLd8UV6ms_2mKc/edit?usp=sharing" target="_blank" rel="noopener">📑 판정기록 시트 열기 ↗</a>
+        <span class="hint">기관 구글 계정으로 로그인한 직원만 열 수 있습니다.</span>
+      </div>
       <div id="saveStatus" class="result wait" style="display:none"></div>
       <div id="recentBox" style="display:none;margin-top:14px">
         <h3 style="margin:.2em 0 .4em">이번 접속에서 기록한 대상자</h3>
-        <div class="tbl-wrap"><table style="min-width:440px"><thead><tr><th>시각</th><th>관리번호</th><th>유형</th><th>소득</th><th>의견</th><th>결과</th></tr></thead><tbody id="recentList"></tbody></table></div>
+        <div class="tbl-wrap"><table style="min-width:440px"><thead><tr><th>시각</th><th>대상자</th><th>유형</th><th>소득</th><th>의견</th><th>결과</th></tr></thead><tbody id="recentList"></tbody></table></div>
       </div>
-      <p class="hint" style="margin-top:10px">※ 시트에는 관리번호·판정 결과만 기록됩니다. 실명·주민등록번호·연락처는 입력하지 마세요. 같은 판정을 두 번 눌러도 한 번만 기록됩니다.</p>
+      <p class="hint" style="margin-top:10px">※ 주민등록번호·연락처·주소는 입력하지 마세요(자동 차단). 같은 기관에서 같은 이름으로 다시 기록하면 새 줄 대신 최신 판정으로 갱신되므로, <b>동명이인은 이름 뒤에 구분 표시(예: 김영희-2)</b>를 붙이세요. 이 화면은 대상자 이름을 기기에 저장하지 않습니다.</p>
     </div>
   </section>
 </main>
@@ -712,7 +716,7 @@ function renderSummary(){
     '[온앤쿨케어 대상자 판정 요약]',
     `작성일: ${new Date().toLocaleDateString('ko-KR')}`,
     `기관/담당자: ${$('#sOrg').value||'(미입력)'} / ${$('#sStaff').value||'(미입력)'}`,
-    `대상자(관리번호): ${$('#sName').value||'(미입력)'}`,
+    `대상자: ${$('#sName').value||'(미입력)'}`,
     `세대주: ${$('#sHead').value||'(미선택)'}`,
     `가구원 수: ${S.hh}인 (등본 기준)`,
     `소득기준(중위 150%): ${incTxt}`,
@@ -765,7 +769,7 @@ function validate(rec){
   if(!CFG.endpoint) err.push('관리자가 아직 구글 시트 주소를 설정하지 않았습니다 (config.js).');
   if(!rec.org) err.push('기관명을 입력하세요.');
   if(!rec.staff) err.push('담당자를 입력하세요.');
-  if(!rec.caseId) err.push('대상자 관리번호를 입력하세요.');
+  if(!rec.caseId) err.push('대상자 이름을 입력하세요.');
   if(!rec.type) err.push('2번 탭에서 유형을 선택하세요.');
   if(rec.incomeResult==='미판정') err.push('1번 탭에서 소득 판정을 완료하세요.');
   if(!rec.opinion) err.push('담당자 판정 의견을 선택하세요.');
