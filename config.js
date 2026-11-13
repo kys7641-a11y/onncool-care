@@ -11,6 +11,6 @@
  *           1~2분 뒤 페이지에 반영됩니다.
  */
 window.ONNCOOL_CONFIG = {
-  endpoint: "",
+  endpoint: "https://script.google.com/macros/s/AKfycbyk8qwJPB5vmIp-c2NTCQ5BPn6qajeAAZUN6u0zILCQhEUvY3N77Jd9HWjeZhBPM83M/exec",
   token: "onc-a486d4ee6e7c"
 };
