@@ -223,19 +223,19 @@ footer{max-width:1080px;margin:0 auto;padding:0 clamp(10px,3vw,24px) 40px;color:
 
       <h3>월 분할 지급 계획</h3>
       <div class="grid g2">
-        <div><label class="f" for="wMon">동절기 지원 개월 수 <span class="hint">(기본 4개월: 11월~2월)</span></label><input type="number" id="wMon" min="1" max="6" value="4"></div>
-        <div><label class="f" for="sMon">하절기 지원 개월 수 <span class="hint">(기본 3개월: 6월~8월)</span></label><input type="number" id="sMon" min="1" max="6" value="3"></div>
+        <div><label class="f" for="wMon">동절기 지원 개월 수 <span class="hint">(11월~2월, 4개월)</span></label><input type="number" id="wMon" min="1" max="6" value="4"></div>
+        <div><label class="f" for="sMon">하절기 지원 개월 수 <span class="hint">(6월~8월, 3개월)</span></label><input type="number" id="sMon" min="1" max="6" value="3"></div>
       </div>
       <div class="grid g2" style="margin-top:12px">
         <div class="tbl-wrap"><table style="min-width:0"><thead><tr><th colspan="2">동절기 월별 지급액</th></tr></thead><tbody id="wSplit"></tbody></table></div>
         <div class="tbl-wrap"><table style="min-width:0"><thead><tr><th colspan="2">하절기 월별 지급액</th></tr></thead><tbody id="sSplit"></tbody></table></div>
       </div>
-      <div class="note blue">기본 개월 수는 성과연구 안내자료의 지원기간(동절기 2026.11.~2027.2. / 하절기 2027.6.~8.)을 따랐습니다. 사업수행 안내문의 계산 예시는 하절기를 5~7월로 표기하고 있어, <b>하절기 지원 월은 협회 안내를 확인</b>한 뒤 개월 수를 조정하세요.</div>
+      <div class="note blue">지원 기간: <b>동절기 2026.11.~2027.2.(4개월)</b> · <b>하절기 2027.6.~8.(3개월)</b>. 지급 개월이 달라지는 경우에만 개월 수를 바꾸세요.</div>
     </div>
 
     <div class="card">
       <h2>냉·난방비 지원금액 기준표</h2>
-      <p class="lead">(단위: 원) 선택한 칸이 강조됩니다.</p>
+      <p class="lead">(단위: 원) 선택한 칸이 강조됩니다. 5인 이상 가구는 4인가구 기준과 동일합니다.</p>
       <div class="tbl-wrap"><table id="amtTable"></table></div>
     </div>
 
@@ -414,17 +414,21 @@ const AMOUNT = { // 유형: {가구원수:[하절기, 동절기]}
   4:{1:[87500,412500],2:[162500,587500],3:[225000,775000],4:[250000,1000000]}
 };
 const TYPES = {
-  1:{name:'저소득 에너지 취약 가구', short:'중위소득 150% 이하이면서 냉·난방비 경제적 부담이 큰 가구',
+  1:{name:'저소득 에너지 취약 가구', short:'에너지바우처 미대상으로 냉·난방비 경제적 부담이 인정되는 가구',
+     defs:['기준중위소득 150% 이하 가구','에너지바우처 미대상으로 냉·난방비 경제적 부담이 인정되는 가구'],
      docs:['건강보험료 납부확인서'],
-     points:['소득기준(중위 150% 이하) 충족 + 냉·난방비 경제적 부담이 인정되는지 사례판정위원회에서 판단 (안내문 예시)']},
-  2:{name:'에너지바우처 한도 소진 가구', short:'2025년 에너지바우처를 한도까지 소진한 가구',
+     points:['냉·난방비 경제적 부담 인정 여부는 사례판정위원회에서 판단']},
+  2:{name:'에너지바우처 한도 소진 가구', short:'2025년 바우처를 모두 소진해 2026년 바우처만으로는 충당이 어려운 가구',
+     defs:['에너지바우처 이용 가구','2025년 에너지바우처를 모두 소진하여 2026년 에너지바우처만으로는 냉·난방비 충당이 어려울 것으로 인정되는 가구','※ 2025년 잔액 10,000원 이하 포함'],
      docs:['에너지이용권 결정 통지서 (행정복지센터 발급 또는 에너지바우처 누리집 잔액 조회 화면 캡처본)'],
-     points:['2025년 바우처 소진 여부를 콜센터(1600-3190) 공동 청취 방식으로 확인','바우처 사용 현황은 협회 관리 항목(2·3유형)']},
-  3:{name:'에너지바우처 사각지대 가구', short:'수급자이나 에너지바우처 지원이 충분히 닿지 않는 가구',
+     points:['2025년 바우처 소진 여부(잔액 10,000원 이하 포함)를 콜센터(1600-3190) 공동 청취 방식으로 확인','바우처 사용 현황은 협회 관리 항목(2·3유형)']},
+  3:{name:'에너지바우처 사각지대 가구', short:'거주형태·에너지 이용환경 때문에 바우처만으로는 충당이 어려운 가구',
+     defs:['에너지바우처 이용 가구 또는 발급 대상 가구','에너지바우처 신청 대상에 해당하나, 거주형태, 에너지 이용환경의 특성으로 에너지바우처만으로는 냉·난방비 충당이 어려울 것으로 인정되는 가구'],
      docs:['에너지이용권 결정 통지서 (행정복지센터 또는 누리집 잔액 조회 화면 캡처본)','또는: 수급자증명서 + 에너지바우처 대상 증빙 서류*'],
-     points:['*수급자이면서 등본상 본인 또는 세대원이 아래 중 하나에 해당 (에너지바우처 홈페이지 참조)'],
+     points:['*바우처 대상 증빙: 수급자이면서 등본상 본인 또는 세대원이 아래 중 하나에 해당 (에너지바우처 홈페이지 참조)'],
      members:['노인','영유아','장애인','임산부','중증질환자','희귀질환자','중증난치질환자','한부모가족','소년소녀가정','다자녀세대']},
-  4:{name:'에너지 인프라 취약지역 가구', short:'에너지 공급 인프라가 취약한 지역에 사는 가구',
+  4:{name:'에너지 인프라 취약지역 가구', short:'농산어촌 등 에너지 인프라가 취약한 지역에 사는 가구',
+     defs:['기준중위소득 150% 이하 가구','농산어촌 등 지역 특성에 따라 에너지 인프라가 취약한 지역에 거주하는 가구'],
      docs:['건강보험료 납부확인서 또는 수급자증명서'],
      points:['에너지 인프라 취약가구가 있는 지역에 한해 선정','냉·난방비를 계좌이체 외에 기관이 직접 구입·지원 가능 (예: 난방유 드럼 단위 구매)']}
 };
@@ -576,7 +580,8 @@ function renderTypeDetail(){
   const t=TYPES[S.type], items=docItems();
   let html=`<h2>${S.type}유형 · ${t.name}</h2>
   <p class="lead">현재 소득 자격: <b>${INCOME_DOCS[S.qual].label}</b> (1번 탭에서 변경)</p>
-  <h3 style="margin-top:.4em">선정 포인트</h3><ul>${t.points.map(p=>`<li>${p}</li>`).join('')}</ul>`;
+  <h3 style="margin-top:.4em">공식 선정 기준</h3><ul>${t.defs.map(x=>x.startsWith('※')?`<li class="hint" style="list-style:none">${x}</li>`:`<li><b>${x}</b></li>`).join('')}</ul>
+  <h3>확인 포인트</h3><ul>${t.points.map(p=>`<li>${p}</li>`).join('')}</ul>`;
   if(t.members){
     html+=`<h3>세대원 요건 확인 <span class="hint">(해당 항목 체크)</span></h3><div class="seg" id="memSeg">${t.members.map(m=>`<button data-m="${m}" aria-pressed="${!!S.members[m]}">${m}</button>`).join('')}</div>`;
   }
@@ -612,7 +617,7 @@ function split(total,months){
 const W_MONTHS=['11월','12월','1월','2월','3월','4월'], S_MONTHS=['6월','7월','8월','9월','10월','11월'];
 function updAmount(){
   const a=amountOf(S.aType,S.aHh);
-  $('#amtWarn').innerHTML = a.capped ? `<div class="note">기준표는 <b>4인가구까지만</b> 금액을 제시합니다. ${S.aHh}인 가구는 4인가구 금액을 임시로 표시했으니, <b>협회에 적용 금액을 확인</b>하세요.</div>` : '';
+  $('#amtWarn').innerHTML = a.capped ? `<div class="note blue">${S.aHh}인 가구는 <b>4인가구 기준 금액</b>을 적용합니다. (5인 이상은 4인 가구 기준과 동일)</div>` : '';
   $('#amtBox').innerHTML=`<div class="s"><small>☀️ 하절기</small><b>${won(a.s)}</b></div><div class="w"><small>❄️ 동절기</small><b>${won(a.w)}</b></div><div class="t"><small>연간 합계</small><b>${won(a.t)}</b></div>`;
   const wm=split(a.w,$('#wMon').value), sm=split(a.s,$('#sMon').value);
   const wl=(+$('#wMon').value===4)?W_MONTHS:null, sl=(+$('#sMon').value===3)?S_MONTHS:null;
@@ -622,7 +627,7 @@ function updAmount(){
 }
 function renderAmtTable(){
   const key=Math.min(S.aHh,4);
-  let h='<thead><tr><th>유형</th><th>구분</th>'+[1,2,3,4].map(n=>`<th>${n}인가구</th>`).join('')+'</tr></thead><tbody>';
+  let h='<thead><tr><th>유형</th><th>구분</th>'+[1,2,3,4].map(n=>`<th>${n===4?'4인 이상':n+'인가구'}</th>`).join('')+'</tr></thead><tbody>';
   for(const t of [1,2,3,4]){
     ['하절기','동절기','합계'].forEach((lab,i)=>{
       h+='<tr>'+(i===0?`<td rowspan="3" style="white-space:normal;min-width:120px"><b>${t}유형</b><br><span class="hint">${TYPES[t].name}</span></td>`:'')+`<td>${lab}</td>`;
@@ -656,7 +661,7 @@ function updSim(){
   [1,2,3,4].forEach(t=>{if(t===4&&noT4)return;checks.push([per[t]>=4,`${t}유형 최소 4가구 (현재 ${per[t]}가구)`])});
   const allOk=checks.every(c=>c[0]);
   const box=$('#simResult');
-  if(total===0){box.className='result wait';box.textContent='가구 수를 입력하면 요건 충족 여부가 표시됩니다. (4인 이상 칸은 4인가구 금액으로 계산)';return}
+  if(total===0){box.className='result wait';box.textContent='가구 수를 입력하면 요건 충족 여부가 표시됩니다. (5인 이상은 4인 이상 칸에 입력)';return}
   box.className='result '+(allOk?'ok':'ng');
   box.innerHTML=`<div class="big">${allOk?'✅ 선정 요건 충족':'⚠️ 보완 필요'}</div>`+checks.map(c=>`<div class="flag ${c[0]?'ok':'ng'}">${c[0]?'✔':'✘'} ${c[1]}</div>`).join('')+`<div class="hint" style="margin-top:6px">냉·난방비 연간 총액 ${won(sum)} · 실제 지원액이 계획과 달라도 별도 예산변경은 불필요합니다.</div>`;
 }
@@ -696,7 +701,7 @@ function renderSummary(){
   ];
   if(t===3&&mem.length) lines.push(`세대원 요건: ${mem.join(', ')}`);
   if(a){
-    lines.push(`냉·난방비: 하절기 ${won(a.s)} / 동절기 ${won(a.w)} / 합계 ${won(a.t)}${a.capped?' (※5인 이상 — 4인 금액 임시 적용, 협회 확인 필요)':''}`);
+    lines.push(`냉·난방비: 하절기 ${won(a.s)} / 동절기 ${won(a.w)} / 합계 ${won(a.t)}${a.capped?' (5인 이상: 4인 가구 기준 적용)':''}`);
     lines.push(`동절기 월 분할: ${split(a.w,$('#wMon').value).map(won).join(' → ')}`);
     lines.push(`하절기 월 분할: ${split(a.s,$('#sMon').value).map(won).join(' → ')}`);
   }
@@ -733,7 +738,7 @@ function buildRecord(){
     docs: items.length?`${items.length-missing.length}/${items.length}`:'',
     missing: missing.join(' / '),
     opinion: $('#sOpinion').value, memo: $('#sMemo').value.trim(),
-    capped: a&&a.capped ? 'Y':'', client: 'onncool-web v2'
+    capped: '', client: 'onncool-web v3'
   };
 }
 function validate(rec){

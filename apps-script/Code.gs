@@ -83,7 +83,7 @@ function doPost(e) {
       now, now, d.org, d.staff, d.caseId, d.head,
       num_(d.hh), d.qual, d.ins, num_(d.insAvg), num_(d.insLimit), d.incomeResult,
       d.type, d.members, num_(d.summer), num_(d.winter), num_(d.total), d.docs,
-      d.missing, d.opinion, d.memo + (d.capped === 'Y' ? ' [5인 이상: 4인 금액 임시적용]' : ''), key
+      d.missing, d.opinion, d.memo, key
     ].map(safe_);
 
     // 같은 기관+관리번호가 있으면 덮어쓰기(최초기록일시는 유지)
