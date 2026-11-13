@@ -28,6 +28,10 @@ header .wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto}
 header .eyebrow{font-size:.85em;color:#ffd2a6;letter-spacing:.02em;font-weight:500}
 header .on{color:var(--orange)} header .cool{color:#8fd0c6}
 @media (max-width:640px){header::before{opacity:.35}header::after{opacity:.35}}
+.sys-btn{display:inline-flex;align-items:center;gap:.4em;margin-top:14px;background:var(--orange);color:#fff;font-weight:700;text-decoration:none;padding:.55em 1em;border-radius:99px;font-size:.92em;box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.sys-btn:hover{filter:brightness(1.05)}
+.sys-link{color:var(--teal);font-weight:700;text-decoration:underline;text-underline-offset:2px}
+a.btn{text-decoration:none;display:inline-block}
 header h1{margin:.2em 0 .25em;font-size:clamp(1.35rem,3.6vw,2rem);font-weight:800;line-height:1.3}
 header p{margin:0;opacity:.95;font-size:.95em}
 nav{max-width:1080px;margin:-40px auto 0;padding:0 clamp(10px,3vw,24px);position:sticky;top:0;z-index:20}
@@ -145,6 +149,7 @@ footer{max-width:1080px;margin:0 auto;padding:16px clamp(10px,3vw,24px) 40px;col
     <div class="eyebrow">지역사회 맞춤형 에너지 돌봄 사업 · 사회복지공동모금회 지원</div>
     <h1>‘<span class="on">온(溫)</span> 앤 <span class="cool">쿨(cool)</span> 케어’ 대상자 선정 도우미</h1>
     <p>소득 판정 → 유형·서류 확인 → 냉·난방비 계산까지 한 화면에서 확인하세요.</p>
+    <a class="sys-btn" href="http://onandcool.or.kr/auth/login.html" target="_blank" rel="noopener">📊 온앤쿨케어 성과관리 시스템 바로가기 ↗</a>
   </div>
 </header>
 
@@ -265,6 +270,7 @@ footer{max-width:1080px;margin:0 auto;padding:16px clamp(10px,3vw,24px) 40px;col
     <div class="card">
       <h2>실무 가이드</h2>
       <p class="lead">사업수행 안내문 · 성과연구 안내 · 모금회 사업수행 안내자료에서 실무에 바로 필요한 내용만 모았습니다.</p>
+      <div class="note blue">📊 선정 명단 입력, 월별 모니터링, 수령증 등록, 설문·사례관리 실적 입력은 모두 <a class="sys-link" href="http://onandcool.or.kr/auth/login.html" target="_blank" rel="noopener">온앤쿨케어 성과관리 시스템</a>에서 합니다. (기관별 계정으로 로그인)</div>
 
       <details open>
         <summary>✅ 지원가구 선정 필수 체크리스트</summary>
@@ -275,11 +281,11 @@ footer{max-width:1080px;margin:0 auto;padding:16px clamp(10px,3vw,24px) 40px;col
         <summary>🔁 냉·난방비 매월 지원 절차</summary>
         <div class="body">
           <div class="flow">
-            <div class="st"><b>① 전월 사용 모니터링</b>매월 10일 전 진행<br>결과를 성과관리 시스템에 입력</div>
+            <div class="st"><b>① 전월 사용 모니터링</b>매월 10일 전 진행<br>결과를 <a class="sys-link" href="http://onandcool.or.kr/auth/login.html" target="_blank" rel="noopener">성과관리 시스템</a>에 입력</div>
             <div class="ar">→</div>
             <div class="st"><b>② 냉·난방비 지원</b>매월 10일 지원<br>지원가구 <u>명의 통장</u>으로 계좌이체</div>
             <div class="ar">→</div>
-            <div class="st"><b>③ 수령증 등록</b>익월 10일 전 수령증 접수 및 등록</div>
+            <div class="st"><b>③ 수령증 등록</b>익월 10일 전 수령증 접수 및 <a class="sys-link" href="http://onandcool.or.kr/auth/login.html" target="_blank" rel="noopener">시스템 등록</a></div>
           </div>
           <ul>
             <li>동절기·하절기 <b>첫 달 지원 시에는 모니터링 절차 생략</b></li>
@@ -392,6 +398,7 @@ footer{max-width:1080px;margin:0 auto;padding:16px clamp(10px,3vw,24px) 40px;col
         <button class="btn ghost" id="copyBtn">📋 요약 복사</button>
         <button class="btn ghost" id="printBtn">🖨️ 인쇄</button>
         <button class="btn ghost" id="resetBtn">↺ 새 대상자</button>
+        <a class="btn ghost" href="http://onandcool.or.kr/auth/login.html" target="_blank" rel="noopener">📊 성과관리 시스템 ↗</a>
       </div>
       <div id="saveStatus" class="result wait" style="display:none"></div>
       <div id="recentBox" style="display:none;margin-top:14px">
@@ -477,7 +484,7 @@ const SEL_CHECK = [
   ['최초 선정 시 40가구 이상 선정','안내문'],
   ['유형별 최소 4가구 유지 (4유형은 해당 지역이 있는 경우에 한함)','안내문'],
   ['선정가구는 냉·난방비 지원 필수 (효율 개선만 받는 가구 선정 불가)','안내문'],
-  ['1차 선정 명단을 ‘온앤쿨케어 성과관리 시스템’에 입력 (세대주≠대상자면 세대주 성명·생년월일 필수)','안내문'],
+  ['1차 선정 명단을 <a class="sys-link" href="http://onandcool.or.kr/auth/login.html" target="_blank" rel="noopener">‘온앤쿨케어 성과관리 시스템’</a>에 입력 (세대주≠대상자면 세대주 성명·생년월일 필수)','안내문'],
   ['협회 2차 심사·승인 확인 (업무일 기준 3일 이내 승인 예정)','안내문'],
   ['자료 활용(개인정보) 동의서 받고 원본 기관 보관','성과연구 안내']
 ];
@@ -720,7 +727,7 @@ function renderSummary(){
   if(items.length){lines.push('필요 서류:');items.forEach((it,i)=>lines.push(`  ${S.typeChecks[i]?'[✔]':'[ ]'} ${it[0]}`))}
   if($('#sOpinion').value) lines.push(`담당자 의견: ${$('#sOpinion').value}`);
   if($('#sMemo').value) lines.push(`메모: ${$('#sMemo').value}`);
-  lines.push('', '※ 최종 선정: 사례판정위원회 판단 → 성과관리 시스템 입력 → 협회 2차 심사');
+  lines.push('', '※ 최종 선정: 사례판정위원회 판단 → 성과관리 시스템 입력 → 협회 2차 심사', '※ 성과관리 시스템: http://onandcool.or.kr/auth/login.html');
   $('#sumText').textContent=lines.join('\n');
 }
 ['sName','sMemo'].forEach(id=>$('#'+id).addEventListener('input',renderSummary));
@@ -784,7 +791,7 @@ $('#saveBtn').addEventListener('click',async()=>{
     const j=await res.json();
     if(j.ok){
       const how=j.updated?'기존 기록을 최신 판정으로 갱신':'새로 기록';
-      setStatus('ok',`<b>✅ 구글 시트에 ${how}했습니다</b><br><span class="hint">시트 ${j.row}행 · ${esc(rec.org)} / ${esc(rec.caseId)}</span>`);
+      setStatus('ok',`<b>✅ 구글 시트에 ${how}했습니다</b><br><span class="hint">시트 ${j.row}행 · ${esc(rec.org)} / ${esc(rec.caseId)}</span>`+(rec.opinion.startsWith('적합')?`<br>다음 단계: 사례판정위원회 확정 후 <a class="sys-link" href="http://onandcool.or.kr/auth/login.html" target="_blank" rel="noopener">성과관리 시스템</a>에 1차 선정 명단 입력`:''));
       addRecent(rec,j.updated?'갱신':'신규'); toast('시트에 기록했습니다');
     } else {
       setStatus('ng',`<b>❌ 기록 실패</b><br>${esc(j.error==='token'?'접속 키가 맞지 않습니다. 관리자에게 config.js 설정을 확인해 달라고 하세요.':j.error||'알 수 없는 오류')}`);
